@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:ui' as ui;
-import 'dart:html';
 import 'modules/auth/auth_module.dart';
 import 'modules/auth/models/auth_response.dart';
+import 'modules/music/music_module.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,41 +32,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String? _token;
-  final String _baseUrl = 'https://dev.xulu.co.id';
 
-  String get _iframeUrl =>
-      _token != null ? '$_baseUrl?token=$_token' : _baseUrl;
-
-  void _handleAuthenticated(AuthResponse response) {
+  void _handleAuthenticated(AuthResponse response) async {
     if (response.success) {
       setState(() => _token = response.token);
-      _sendTokenToIframe();
     }
-  }
-
-  void _sendTokenToIframe() {
-    if (_token != null) {
-      window.postMessage({
-        'type': 'TOKEN',
-        'token': _token,
-      }, '*');
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // Register the iframe element
-    // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory(
-      'iframeElement',
-      (int viewId) => IFrameElement()
-        ..src = _iframeUrl
-        ..style.border = 'none'
-        ..style.height = '100%'
-        ..style.width = '100%'
-        ..allowFullscreen = true,
-    );
   }
 
   @override
@@ -77,24 +46,15 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Flutter Web Iframe Demo'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Stack(
+      body: Column(
         children: [
           if (_token == null)
-            Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 400),
-                child: AuthModule(
-                  onAuthenticated: _handleAuthenticated,
-                ),
-              ),
+            AuthModule(
+              onAuthenticated: _handleAuthenticated,
             ),
           if (_token != null)
-            const SizedBox(
-              height: double.infinity,
-              width: double.infinity,
-              child: HtmlElementView(
-                viewType: 'iframeElement',
-              ),
+            Expanded(
+              child: MusicModule(token: _token!),
             ),
         ],
       ),
