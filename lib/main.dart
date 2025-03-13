@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import './modules/auth/auth_module.dart';
-import './modules/auth/models/auth_response.dart';
 import './modules/music/music.dart';
 
 void main() {
@@ -33,12 +31,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? _token;
 
-  void _handleAuthenticated(AuthResponse response) async {
-    if (response.success) {
-      setState(() => _token = response.token);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,14 +40,9 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Column(
         children: [
-          if (_token == null)
-            AuthModule(
-              onAuthenticated: _handleAuthenticated,
-            ),
-          if (_token != null)
-            Expanded(
-              child: MusicModule(token: _token!),
-            ),
+          Expanded(
+            child: MusicModule(token: _token!),
+          ),
         ],
       ),
     );

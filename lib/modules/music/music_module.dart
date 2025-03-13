@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import './services/music_service.dart';
 import './widgets/music_list.dart';
-import './models/music_response.dart';
 
 class MusicModule extends StatelessWidget {
   final String token;
