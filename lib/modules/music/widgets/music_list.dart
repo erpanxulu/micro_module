@@ -12,6 +12,7 @@ class MusicList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      padding: const EdgeInsets.only(left: 30),
       shrinkWrap: true,
       itemCount: musicItems.length,
       itemBuilder: (context, index) {
