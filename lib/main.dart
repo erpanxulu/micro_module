@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'modules/auth/auth_module.dart';
-import 'modules/auth/models/auth_response.dart';
-import 'modules/music/music.dart';
+import './modules/auth/auth_module.dart';
+import './modules/auth/models/auth_response.dart';
+import './modules/music/music.dart';
 
 void main() {
   runApp(const MyApp());
